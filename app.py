@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
 from workout_functions.block_calc.main import calculate_workouts
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.join('frontend', 'templates'))
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
