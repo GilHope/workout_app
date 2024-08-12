@@ -11,13 +11,13 @@ def index():
     if request.method == 'POST':
         try:
             # Get the 1RM inputs from the form
-            squat_1rm = int(request.form['squat_1rm'])
             bench_1rm = int(request.form['bench_1rm'])
-            deadlift_1rm = int(request.form['deadlift_1rm'])
+            squat_1rm = int(request.form['squat_1rm'])
             ohp_1rm = int(request.form['ohp_1rm'])
+            deadlift_1rm = int(request.form['deadlift_1rm'])
             
             # Calculate the workout plan
-            orms = (squat_1rm, bench_1rm, deadlift_1rm, ohp_1rm)
+            orms = (bench_1rm, squat_1rm, ohp_1rm, deadlift_1rm)
             workout_plan = calculate_workouts(orms)
 
             # Pass the workout plan to the template

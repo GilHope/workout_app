@@ -4,12 +4,12 @@ def calculate_workouts(orms):
     """
     Calculate the workout program based on the given 1RMs.
 
-    :param orms: A tuple containing the 1RM for squat, bench, deadlift, overhead press
+    :param orms: A tuple containing the 1RM for bench, squat, overhead press, and deadlift
     :return: A dictionary with the workout plan for each week
     """
     workout_plan = {}
 
-    training_maxes = {lift: max * 0.9 for lift, max in zip(["SQUAT", "BENCH", "DEADLIFT", "OHP"], orms)}
+    training_maxes = {lift: max * 0.9 for lift, max in zip(["BENCH", "SQUAT", "OHP", "DEADLIFT"], orms)}
 
     # Define the rep schemes and percentages for each week
     rep_schemes = {
@@ -40,7 +40,7 @@ def calculate_workouts(orms):
 
 if __name__ == "__main__":
     # Default 1RM values
-    default_1rms = (315, 225, 405, 135) # <--- Change these default values here!
+    default_1rms = (225, 315, 135, 405) # <--- Change these default values here!
     
     # If no command-line arguments are provided, use default values
     if len(sys.argv) == 1:
@@ -54,7 +54,7 @@ if __name__ == "__main__":
             print(f"Exception message: {e}")
             sys.exit(1)
     else:
-        print("Usage: python3 wendler_func_4.py [squat_1rm bench_1rm deadlift_1rm ohp_1rm]")
+        print("Usage: python3 wendler_func_4.py [bench_1rm squat_1rm ohp_1rm deadlift_1rm]")
         sys.exit(1)
     
     workout_plan = calculate_workouts(my_1rms)
