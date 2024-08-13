@@ -26,7 +26,7 @@ def calculate_workouts(orms):
 
         for lift, training_max in training_maxes.items():
             workout_plan[formatted_week][lift] = [
-                (f'{reps} reps', f'{round(training_max * perc / 5) * 5}lbs') for reps, perc in reps_and_percs
+                (f'{reps} ', f'{round(training_max * perc / 5) * 5}lbs') for reps, perc in reps_and_percs
             ]
 
     return workout_plan

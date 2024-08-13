@@ -35,11 +35,12 @@
             <h3>{{ week }}</h3>
             {% for lift, sets in lifts.items() %}
                 <strong>{{ lift }}:</strong>
-                <ul>
+                <span>
                     {% for reps, weight in sets %}
-                        <li>{{ reps }} - {{ weight }}</li>
+                        {{ reps }} x {{ weight }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
-                </ul>
+                </span>
+                <br><br>
             {% endfor %}
         {% endfor %}
     {% endif %}
