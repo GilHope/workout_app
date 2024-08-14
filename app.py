@@ -7,7 +7,7 @@ app = Flask(__name__,
             static_folder=os.path.join('frontend', 'static'))
 
 @app.route('/', methods=['GET', 'POST'])
-def index():
+def calculator():
     if request.method == 'POST':
         try:
             # Get the 1RM inputs from the form
@@ -21,13 +21,13 @@ def index():
             workout_plan = calculate_workouts(orms)
 
             # Pass the workout plan to the template
-            return render_template('index.html', workout_plan=workout_plan)
+            return render_template('calculator.html', workout_plan=workout_plan)
         
         except ValueError:
-            return render_template('index.html', error="Please enter valid integer values for all 1RMs.")
+            return render_template('calculator.html', error="Please enter valid integer values for all 1RMs.")
     
     # If GET request, just render the form
-    return render_template('index.html')
+    return render_template('calculator.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
