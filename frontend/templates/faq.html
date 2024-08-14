@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Wendler 5/3/1 Workout Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
+</head>
+<body>
+    <h1>FAQ</h1>
+    <section> 
+        <h2>Understanding 5/3/1</h2>
+        <p>
+            <strong>Overview: </strong>The Wendler 5/3/1 program is a popular strength training program designed by Jim Wendler. It's based on a simple yet effective approach to building strength in four main lifts: the squat, bench press, deadlift, and overhead press. The program is structured around a four-week cycle, with each week focusing on progressively heavier weights and lower repetitions.
+        </p>
+        <p>
+            <strong>Progression: </strong>After completing the four-week cycle, you add weight to your Training Max: typically 5 lbs to the upper body lifts (bench press and overhead press) and 10 lbs to the lower body lifts (squat and deadlift). You then begin the next cycle with these adjusted weights.
+        </p>
+        <p>
+            <strong>Philosophy: </strong>The 5/3/1 program emphasizes long-term progress, patience, and consistency. It's designed to help lifters gradually increase their strength over time without risking injury or burnout. The focus is on hitting your reps with good form, leaving a few reps "in the tank," and steadily building strength.
+        </p>
+        <p>
+            <strong>Assistance Work: </strong>The Wendler 5/3/1 program also includes optional assistance work, which complements the main lifts. Common templates include "Boring But Big" (5 sets of 10 reps of the main lift at a lower weight), "Triumvirate" (3 sets of 10 reps of two additional exercises), and "FSL" (First Set Last, where you repeat the first work set for additional volume).
+        </p>
+        <p>
+            <strong>Terminology: </strong>TM stands for Training Max, which is calculated as 90% of your 1-rep max (1RM) for each lift. The AMRAP, 'As Many Reps As Possible', sets allow you to push yourself and gauge your progress. The deload week is a lighter week to allow for recovery and prevent overtraining.
+        </p>
+        <h2>Four-Week Block</h2>
+        <h3>Week 1 (3x5):</h3>
+        <ul>
+            <li><strong>Set 1:</strong> 65% of your Training Max (TM) for 5 reps.</li>
+            <li><strong>Set 2:</strong> 75% of your TM for 5 reps.</li>
+            <li><strong>Set 3:</strong> 85% of your TM for 5+ reps (as many reps as possible, or AMRAP).</li>
+        </ul>
+
+        <h3>Week 2 (3x3):</h3>
+        <ul>
+            <li><strong>Set 1:</strong> 70% of your TM for 3 reps.</li>
+            <li><strong>Set 2:</strong> 80% of your TM for 3 reps.</li>
+            <li><strong>Set 3:</strong> 90% of your TM for 3+ reps (AMRAP).</li>
+        </ul>
+
+        <h3>Week 3 (5/3/1):</h3>
+        <ul>
+            <li><strong>Set 1:</strong> 75% of your TM for 5 reps.</li>
+            <li><strong>Set 2:</strong> 85% of your TM for 3 reps.</li>
+            <li><strong>Set 3:</strong> 95% of your TM for 1+ reps (AMRAP).</li>
+        </ul>
+
+        <h3>Week 4 (Deload):</h3>
+        <ul>
+            <li><strong>Set 1:</strong> 40% of your TM for 5 reps.</li>
+            <li><strong>Set 2:</strong> 50% of your TM for 5 reps.</li>
+            <li><strong>Set 3:</strong> 60% of your TM for 5 reps.</li>
+        </ul>
+    </section>
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </div>
+</body>
+</html>

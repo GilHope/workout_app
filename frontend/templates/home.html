@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
 </head>
 <body>
-    <h1>Wendler 5/3/1 Workout Calculator</h1>
+    <h1>Welcome</h1>
     
     <section> 
-        <h2>Understanding 5/3/1</h2>
+        <h2>Got bored, made this app..</h2>
         <p>
             5/3/1 is a strength training program designed to build strength progressively.
             The program works by using a percentage of your 1-rep max (1RM) for each lift, known as your "training max."
@@ -26,6 +26,6 @@
         </p>
     </section>
     <a href="{{ url_for('calculator') }}">Go to Calculator</a><br>
-    <!-- <a href="{{ url_for('calculator') }}">FAQ</a> -->
+    <a href="{{ url_for('faq') }}" style="margin-left: 20px;">FAQ</a>
 </body>
 </html>
