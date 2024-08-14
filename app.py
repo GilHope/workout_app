@@ -6,7 +6,11 @@ app = Flask(__name__,
             template_folder=os.path.join('frontend', 'templates'), 
             static_folder=os.path.join('frontend', 'static'))
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/calculator', methods=['GET', 'POST'])
 def calculator():
     if request.method == 'POST':
         try:

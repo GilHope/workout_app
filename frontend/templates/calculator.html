@@ -7,23 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
 </head>
 <body>
-    <h1>Wendler 5/3/1 Workout Calculator</h1>
+    <h1>Wendler 5/3/1 Calculator</h1>
     
     <section> 
-        <h2>Understanding 5/3/1</h2>
-        <p>
-            5/3/1 is a strength training program designed to build strength progressively.
-            The program works by using a percentage of your 1-rep max (1RM) for each lift, known as your "training max."
-            Your training max is calculated as 90% of your 1RM. Each week, you perform sets based on a percentage of this training max.
-        </p>
-        <p>
-            After completing a four-week cycle, you can increase your training max by 5 lbs for upper body lifts (bench press, overhead press) 
-            and by 10 lbs for lower body lifts (squat, deadlift) before starting the next cycle.
-        </p>
-        <p>
-            <strong>Note:</strong> You should first know your 1-rep max (1RM) for each lift. 
-            If you don't know your 1RMs, you'll need to determine them first before entering the values into the app.
-        </p>
+        <h2>
+            Enter your most recent PRs for each lift field.
+        </h2>
     </section>
     <!-- Above section to be moved to its own page at later date -->
     <form method="post">
@@ -61,5 +50,10 @@
             {% endfor %}
         {% endfor %}
     {% endif %}
+
+    <div style="margin-top: 20px;">
+        <a href="{{ url_for('home') }}">Back to Home</a>
+    </div>
+
 </body>
 </html>
