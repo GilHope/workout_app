@@ -49,7 +49,7 @@
             {% endfor %}
         {% endfor %}
 
-    <!-- Debug output -->
+    <!-- Generate PDF button -->
         <form action="{{ url_for('generate_pdf') }}" method="POST">
             <input type="hidden" name="workout_plan" id="workout_plan_input">
             <button type="submit">Download as PDF</button>
@@ -64,19 +64,5 @@
     <div style="margin-top: 20px;">
         <a href="{{ url_for('home') }}">Back to Home</a>
     </div>
-
-    <!-- JavaScript to log form submission -->
-    <script>
-        document.querySelector('form[action="{{ url_for('generate_pdf') }}"]').addEventListener('submit', function(event) {
-            const workoutPlanInput = document.getElementById('workout_plan_input');
-            if (workoutPlanInput) {
-                const workoutPlan = workoutPlanInput.value;
-                console.log('Workout plan being submitted:', workoutPlan);
-            } else {
-                console.error('workout_plan_input element not found.');
-            }
-        });
-    </script>
-
 </body>
 </html>
