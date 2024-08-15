@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Workout Plan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        .workout-plan {
+            margin-top: 20px;
+        }
+        .workout-plan h3 {
+            margin-top: 10px;
+            color: #444;
+        }
+        .workout-plan p {
+            margin: 5px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Workout Plan</h1>
+    <div class="workout-plan">
+        {% for week, lifts in workout_plan.items() %}
+            <h2>{{ week }}</h2>
+            {% for lift, sets in lifts.items() %}
+                <h3>{{ lift }}</h3>
+                <p>
+                    {% for reps, weight in sets %}
+                        {{ reps }} x {{ weight }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</body>
+</html>

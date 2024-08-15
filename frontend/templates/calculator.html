@@ -11,10 +11,9 @@
     
     <section> 
         <p>
-            <strong>Enter your most recent PRs for each lift field.</strong>
+            <strong>Enter your most recent PR for each lift field.</strong>
         </p>
     </section>
-    <!-- Above section to be moved to its own page at later date -->
     <form method="post">
         <label for="bench_1rm">Bench 1RM:</label>
         <input type="number" id="bench_1rm" name="bench_1rm" required><br><br>
@@ -49,11 +48,35 @@
                 <br><br>
             {% endfor %}
         {% endfor %}
+
+    <!-- Debug output -->
+        <form action="{{ url_for('generate_pdf') }}" method="POST">
+            <input type="hidden" name="workout_plan" id="workout_plan_input">
+            <button type="submit">Download as PDF</button>
+        </form>
+
+        <script>
+            document.getElementById('workout_plan_input').value = JSON.stringify({{ workout_plan | tojson | safe }});
+        </script>   
     {% endif %}
 
+    <!-- Home page return link -->
     <div style="margin-top: 20px;">
         <a href="{{ url_for('home') }}">Back to Home</a>
     </div>
+
+    <!-- JavaScript to log form submission -->
+    <script>
+        document.querySelector('form[action="{{ url_for('generate_pdf') }}"]').addEventListener('submit', function(event) {
+            const workoutPlanInput = document.getElementById('workout_plan_input');
+            if (workoutPlanInput) {
+                const workoutPlan = workoutPlanInput.value;
+                console.log('Workout plan being submitted:', workoutPlan);
+            } else {
+                console.error('workout_plan_input element not found.');
+            }
+        });
+    </script>
 
 </body>
 </html>

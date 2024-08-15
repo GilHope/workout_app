@@ -1,6 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from workout_functions.block_calc.main import calculate_workouts
+import pdfkit
 import os
+import json
+import traceback
+from io import BytesIO
 
 app = Flask(__name__, 
             template_folder=os.path.join('frontend', 'templates'), 
@@ -36,6 +40,32 @@ def calculator():
 @app.route('/faq')
 def faq():
     return render_template('faq.html')
+
+@app.route('/generate_pdf', methods=['POST'])
+def generate_pdf():
+    try:
+        workout_plan_json = request.form['workout_plan'].strip()
+        print("Received workout plan JSON:", repr(workout_plan_json))
+        workout_plan = json.loads(workout_plan_json)
+        
+        rendered = render_template('pdf_template.html', workout_plan=workout_plan)
+        
+        path_to_wkhtmltopdf = '/usr/bin/wkhtmltopdf'
+        config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
+        
+        pdf = pdfkit.from_string(rendered, False, configuration=config)
+        
+        response = BytesIO(pdf)
+        return send_file(
+            response,
+            as_attachment=True,
+            download_name='workout_plan.pdf',
+            mimetype='application/pdf'
+        )
+    except Exception as e:
+        print("Error during PDF generation:", e)
+        traceback.print_exc()
+        return "Error generating PDF", 500
 
 if __name__ == '__main__':
     app.run(debug=True)
