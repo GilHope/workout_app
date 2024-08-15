@@ -126,3 +126,43 @@ a {
 a:hover {
     background-color: #218838;
 }
+
+/* PDF Button */
+.pdf-button {
+    background-color: #007bff; /* Blue color */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding for the button */
+    border: none; /* Remove the border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Font size */
+    display: block; /* Make the button a block-level element */
+    margin: 20px auto; /* Center the button horizontally and add margin */
+}
+
+.pdf-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Container for the PDF Button */
+.pdf-button-container {
+    background-color: transparent; /* Ensure the container has no background */
+    padding: 0; /* Remove padding */
+    margin: 0 auto; /* Center the container */
+    border: none; /* Remove any borders */
+    box-shadow: none; /* Remove any box shadows */
+    text-align: center; /* Center the contents */
+    display: flex; /* Use flexbox to align items */
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+}
+
+.pdf-button-container form {
+    background-color: transparent; /* Ensure the form inside the wrapper has no background */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    display: inline-block; /* Keep the form inline-block */
+    text-align: center; /* Center align the contents */
+    border: none; /* Remove any borders */
+    box-shadow: none; /* Remove any box shadows */
+}
