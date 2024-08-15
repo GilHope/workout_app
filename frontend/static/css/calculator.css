@@ -104,6 +104,14 @@ ul li {
     border-radius: 4px;
 }
 
+.set-template ul li {
+    background-color: transparent; /* Remove grey background */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    border-radius: 0; /* Remove border radius */
+    list-style-type: disc; /* Use default list style */
+}
+
 a {
     display: inline-block;
     margin-top: 20px;
