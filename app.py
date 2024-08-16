@@ -22,13 +22,17 @@ def calculator():
             squat_1rm = int(request.form['squat_1rm'])
             ohp_1rm = int(request.form['ohp_1rm'])
             deadlift_1rm = int(request.form['deadlift_1rm'])
+            unit = request.form.get('unit', 'lbs')
+
+            # Debugging output
+            print(f"Unit selected: {unit}")
             
             # Calculate the workout plan
             orms = (bench_1rm, squat_1rm, ohp_1rm, deadlift_1rm)
             workout_plan = calculate_workouts(orms)
 
             # Pass the workout plan to the template
-            return render_template('calculator.html', workout_plan=workout_plan)
+            return render_template('calculator.html', workout_plan=workout_plan, unit=unit)
         
         except ValueError:
             return render_template('calculator.html', error="Please enter valid integer values for all 1RMs.")
@@ -45,8 +49,9 @@ def generate_pdf():
     try:
         workout_plan_json = request.form['workout_plan'].strip()
         workout_plan = json.loads(workout_plan_json)
+        unit = request.form.get('unit', 'lbs')
         
-        rendered = render_template('pdf_template.html', workout_plan=workout_plan)
+        rendered = render_template('pdf_template.html', workout_plan=workout_plan, unit=unit)
         
         path_to_wkhtmltopdf = '/usr/bin/wkhtmltopdf'
         config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)

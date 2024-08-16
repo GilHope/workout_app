@@ -4,8 +4,8 @@ def calculate_workouts(orms):
     """
     Calculate the workout program based on the given 1RMs.
 
-    :param orms: A tuple containing the 1RM for bench, squat, overhead press, and deadlift
-    :return: A dictionary with the workout plan for each week
+    :param orms: A tuple containing the 1RM for bench, squat, overhead press, and deadlift.
+    :return: A dictionary with the workout plan for each week.
     """
     workout_plan = {}
 
@@ -26,7 +26,7 @@ def calculate_workouts(orms):
 
         for lift, training_max in training_maxes.items():
             workout_plan[formatted_week][lift] = [
-                (f'{reps} ', f'{round(training_max * perc / 5) * 5}lbs') for reps, perc in reps_and_percs
+                (f'{reps} ', round(training_max * perc / 5) * 5) for reps, perc in reps_and_percs
             ]
 
     return workout_plan
