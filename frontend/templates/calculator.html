@@ -16,12 +16,23 @@
     </section>
 
     <form method="post">
+        <label for="variation">Select 5/3/1 Variation:</label>
+        <select id="variation" name="variation">
+            <option value="standard">Standard 5/3/1</option>
+            <option value="boring-but-big">Boring But Big</option>
+            <option value="fsl">First Set Last (FSL)</option>
+            <option value="joker-sets">Joker Sets</option>
+            <option value="building-the-monolith">Building the Monolith</option>
+            <option value="531-for-powerlifting">5/3/1 for Powerlifting</option>
+        </select><br><br>
+
         <!-- Unit Selector -->
         <label for="unit_selector">Select Unit:</label>
         <select id="unit_selector" name="unit">
             <option value="lbs" {% if unit == 'lbs' %}selected{% endif %}>Pounds (lbs)</option>
             <option value="kg" {% if unit == 'kg' %}selected{% endif %}>Kilograms (kg)</option>
         </select><br><br>
+
         <!-- 1RM Fields -->
         <label for="bench_1rm">Bench 1RM:</label>
         <input type="number" id="bench_1rm" name="bench_1rm" required value="{{ request.form.get('bench_1rm', '') }}"><br><br>
