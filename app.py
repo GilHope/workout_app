@@ -9,10 +9,12 @@ app = Flask(__name__,
             template_folder=os.path.join('frontend', 'templates'), 
             static_folder=os.path.join('frontend', 'static'))
 
+# Render home page
 @app.route('/')
 def home():
     return render_template('home.html')
 
+# Process and display workout calculator form
 @app.route('/calculator', methods=['GET', 'POST'])
 def calculator():
     if request.method == 'POST':
@@ -40,10 +42,12 @@ def calculator():
     # If GET request, just render the form
     return render_template('calculator.html')
 
+# Render FAQ page
 @app.route('/faq')
 def faq():
     return render_template('faq.html')
 
+# Generate PDF from workout plan
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
     try:
@@ -51,13 +55,16 @@ def generate_pdf():
         workout_plan = json.loads(workout_plan_json)
         unit = request.form.get('unit', 'lbs')
         
+        # Render HTML template for PDF generation
         rendered = render_template('pdf_template.html', workout_plan=workout_plan, unit=unit)
         
+        # Generate PDF from rendered HTML
         path_to_wkhtmltopdf = '/usr/bin/wkhtmltopdf'
         config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
         
         pdf = pdfkit.from_string(rendered, False, configuration=config)
         
+        # Return PDF as a download
         response = BytesIO(pdf)
         return send_file(
             response,
@@ -65,6 +72,7 @@ def generate_pdf():
             download_name='workout_plan.pdf',
             mimetype='application/pdf'
         )
+    # Error handling
     except Exception as e:
         print("Error during PDF generation:", e)
         return "Error generating PDF", 500
