@@ -5,6 +5,7 @@ import os
 import json
 from io import BytesIO
 
+# Create Flask app instance
 app = Flask(__name__, 
             template_folder=os.path.join('frontend', 'templates'), 
             static_folder=os.path.join('frontend', 'static'))
@@ -14,28 +15,29 @@ app = Flask(__name__,
 def home():
     return render_template('home.html')
 
-# Process and display workout calculator form
+# Route to handle workout calculator form
 @app.route('/calculator', methods=['GET', 'POST'])
 def calculator():
     if request.method == 'POST':
         try:
-            # Get the 1RM inputs from the form
+            # Extract 1RM inputs from the form
             bench_1rm = int(request.form['bench_1rm'])
             squat_1rm = int(request.form['squat_1rm'])
             ohp_1rm = int(request.form['ohp_1rm'])
             deadlift_1rm = int(request.form['deadlift_1rm'])
             unit = request.form.get('unit', 'lbs')
 
-            # Debugging output
+            # Debugging output for selected unit
             print(f"Unit selected: {unit}")
             
-            # Calculate the workout plan
+            # Call to calculate the workout plan
             orms = (bench_1rm, squat_1rm, ohp_1rm, deadlift_1rm)
             workout_plan = calculate_workouts(orms)
 
-            # Pass the workout plan to the template
+            # Generate workout plan
             return render_template('calculator.html', workout_plan=workout_plan, unit=unit)
         
+        # Error handling
         except ValueError:
             return render_template('calculator.html', error="Please enter valid integer values for all 1RMs.")
     
@@ -51,6 +53,7 @@ def faq():
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
     try:
+        # Extract the JSON from form and parse with py dict.
         workout_plan_json = request.form['workout_plan'].strip()
         workout_plan = json.loads(workout_plan_json)
         unit = request.form.get('unit', 'lbs')
@@ -58,7 +61,7 @@ def generate_pdf():
         # Render HTML template for PDF generation
         rendered = render_template('pdf_template.html', workout_plan=workout_plan, unit=unit)
         
-        # Generate PDF from rendered HTML
+        # Generate PDF from HTML
         path_to_wkhtmltopdf = '/usr/bin/wkhtmltopdf'
         config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
         
@@ -77,5 +80,6 @@ def generate_pdf():
         print("Error during PDF generation:", e)
         return "Error generating PDF", 500
 
+# Run flask app. In debug mode, the server will reload on code changes.
 if __name__ == '__main__':
     app.run(debug=True)
