@@ -38,7 +38,7 @@
                 <h3>{{ lift }}</h3>
                 <p>
                     {% for reps, weight in sets %}
-                        {{ reps }} x {{ weight }}{{ unit}}{% if not loop.last %}, {% endif %}
+                        {{ reps }} x {{ weight }} {{ unit }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </p>
             {% endfor %}
