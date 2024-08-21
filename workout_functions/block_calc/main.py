@@ -31,6 +31,14 @@ def calculate_workouts(orms):
 
     return workout_plan
 
+def add_warmup_sets(lift_name, lift_max):
+    warmup_sets = [
+        (5, round(lift_max * 0.40 / 5) * 5),  # 40% of training max
+        (5, round(lift_max * 0.50 / 5) * 5),  # 50% of training max
+        (3, round(lift_max * 0.60 / 5) * 5)   # 60% of training max
+    ]
+    return [(f'{reps} reps', f'{weight} lbs') for reps, weight in warmup_sets]
+
 
 #######################################################################################################
 #######################################################################################################

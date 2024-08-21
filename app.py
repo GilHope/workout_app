@@ -15,6 +15,15 @@ app = Flask(__name__,
 def home():
     return render_template('home.html')
 
+# Function for adding warm-up sets
+def add_warmup_sets(lift_name, lift_max):
+    warmup_sets = [
+        (5, round(lift_max * 0.40 / 5) * 5),  # 40% of training max
+        (5, round(lift_max * 0.50 / 5) * 5),  # 50% of training max
+        (3, round(lift_max * 0.60 / 5) * 5)   # 60% of training max
+    ]
+    return warmup_sets
+
 # Route to handle workout calculator form
 @app.route('/calculator', methods=['GET', 'POST'])
 def calculator():
@@ -26,6 +35,7 @@ def calculator():
             ohp_1rm = int(request.form['ohp_1rm'])
             deadlift_1rm = int(request.form['deadlift_1rm'])
             unit = request.form.get('unit', 'lbs')
+            include_warmup = request.form.get('warmup', 'no') == 'yes'
 
             # Debugging output for selected unit
             print(f"Unit selected: {unit}")
@@ -34,6 +44,17 @@ def calculator():
             orms = (bench_1rm, squat_1rm, ohp_1rm, deadlift_1rm)
             workout_plan = calculate_workouts(orms)
 
+            # Add warm-up sets if the option is selected
+            if include_warmup:
+                for lift, lift_max in zip(["BENCH", "SQUAT", "OHP", "DEADLIFT"], orms):
+                    warmup_sets = add_warmup_sets(lift, lift_max)
+                    for week in workout_plan:
+                        # Ensure the lift exists in the current week's plan
+                        if lift not in workout_plan[week]:
+                            workout_plan[week][lift] = []
+                        # Prepend warm-up sets before the main workout sets
+                        workout_plan[week][lift] = warmup_sets + workout_plan[week][lift]
+                        
             # Generate workout plan
             return render_template('calculator.html', workout_plan=workout_plan, unit=unit)
         
