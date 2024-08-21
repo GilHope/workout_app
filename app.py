@@ -63,17 +63,17 @@ def calculator():
                 for week, lifts in workout_plan.items():
                     for lift, sets in lifts.items():
                         first_set = sets[0]  # Get the first set's reps and weight
-                        fsl_label = f"3-5 sets for 5-8 x {first_set[1]} {unit}"  # Descriptive label for FSL
+                        fsl_label = f"<em>3-5 sets for 5-8 x {first_set[1]} {unit}</em>"  # Descriptive label for FSL
                         workout_plan[week][lift].append(fsl_label)
 
-            # # Add BBB sets if the option is selected
-            # if include_bbb:
-            #     for week, lifts in workout_plan.items():
-            #         for lift, sets in lifts.items():
-            #             training_max = orms[["BENCH", "SQUAT", "OHP", "DEADLIFT"].index(lift)] * 0.9
-            #             bbb_weight = round(training_max * 0.50 / 5) * 5  # 50% of the training max
-            #             bbb_label = f"5 sets of 10 x {bbb_weight} {unit}"
-            #             workout_plan[week][lift].append(bbb_label)
+            # Add BBB sets if the option is selected
+            if include_bbb:
+                for week, lifts in workout_plan.items():
+                    for lift, sets in lifts.items():
+                        training_max = orms[["BENCH", "SQUAT", "OHP", "DEADLIFT"].index(lift)] * 0.9
+                        bbb_weight = round(training_max * 0.50 / 5) * 5  # 50% of the training max
+                        bbb_label = f"<em>5 sets of 10 x {bbb_weight} {unit}</em>"
+                        workout_plan[week][lift].append(bbb_label)
 
             # Generate workout plan
             return render_template('calculator.html', workout_plan=workout_plan, unit=unit)

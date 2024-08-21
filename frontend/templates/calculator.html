@@ -122,7 +122,7 @@
                 <span>
                     {% for set in sets %}
                         {% if set is string %}
-                            {{ set }}{% if not loop.last %}, {% endif %}
+                            {{ set | safe }}{% if not loop.last %}, {% endif %}
                         {% else %}
                             {{ set[0] }} x {{ set[1] }} {{ unit }}{% if not loop.last %}, {% endif %}
                         {% endif %}
