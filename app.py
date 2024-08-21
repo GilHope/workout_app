@@ -36,7 +36,8 @@ def calculator():
             deadlift_1rm = int(request.form['deadlift_1rm'])
             unit = request.form.get('unit', 'lbs')
             include_warmup = request.form.get('warmup', 'no') == 'yes'
-            include_deload = request.form.get('deload', 'yes') == 'yes'  # Default to 'yes' if not specified
+            include_deload = request.form.get('deload', 'yes') == 'yes'  # Default yes
+            include_fsl = request.form.get('fsl', 'off') == 'on'
 
             # Debugging output for selected unit
             print(f"Unit selected: {unit}")
@@ -55,6 +56,14 @@ def calculator():
                             workout_plan[week][lift] = []
                         # Prepend warm-up sets before the main workout sets
                         workout_plan[week][lift] = warmup_sets + workout_plan[week][lift]
+
+            # Add FSL sets if the option is selected
+            if include_fsl:
+                for week, lifts in workout_plan.items():
+                    for lift, sets in lifts.items():
+                        first_set = sets[0]  # Get the first set's reps and weight
+                        fsl_sets = [(first_set[0], first_set[1])] * 5  # Repeat the first set 5 times
+                        workout_plan[week][lift].extend(fsl_sets)
 
             # Generate workout plan
             return render_template('calculator.html', workout_plan=workout_plan, unit=unit)
