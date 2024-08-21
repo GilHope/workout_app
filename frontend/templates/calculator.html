@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wendler 5/3/1 Workout Calculator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator.css') }}">
+    <script>
+        function showAdditionalSets() {
+            var selectBox = document.getElementById("add_sets");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            var optionsDiv = document.getElementById("additional_sets_options");
+
+            console.log("Selected Value: ", selectedValue); // Debugging line
+
+            if (selectedValue === "yes") {
+                optionsDiv.style.display = "block";
+                console.log("Showing additional sets options."); // Debugging line
+            } else {
+                optionsDiv.style.display = "none";
+                console.log("Hiding additional sets options."); // Debugging line
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Wendler 5/3/1 Calculator</h1>
@@ -18,14 +35,9 @@
     <!-- Form for collecting user input to calculate the workout plan -->
     <form method="post">
         <!-- Program Selector for 5/3/1 variation -->
-        <label for="variation">Select 5/3/1 Variation:</label>
-        <select id="variation" name="variation">
+        <label for="template">Select 5/3/1 Template:</label>
+        <select id="template" name="template">
             <option value="standard">Standard 5/3/1</option>
-            <option value="boring-but-big">Boring But Big</option>
-            <option value="triumvirate">Triumvirate</option>
-            <option value="joker-sets">Joker Sets</option>
-            <option value="building-the-monolith">Building the Monolith</option>
-            <option value="531-for-powerlifting">5/3/1 for Powerlifting</option>
         </select><br><br>
 
         <!-- Unit of Measure Selector -->
@@ -48,6 +60,49 @@
         <label for="deadlift_1rm">Deadlift 1RM:</label>
         <input type="number" id="deadlift_1rm" name="deadlift_1rm" required value="{{ request.form.get('deadlift_1rm', '') }}"><br><br>
         
+        <!-- Warm-up Selector -->
+        <label for="warmup">Include Warm-up Sets:</label>
+        <select id="warmup" name="warmup">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+        </select><br><br>
+
+        <!-- Deload Weeks Selector -->
+        <label for="deload">Include Deload Weeks:</label>
+        <select id="deload" name="deload">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+        </select><br><br>
+        
+        <!-- Additional Sets Options -->
+        <label for="add_sets">Add Additional Sets:</label>
+        <select id="add_sets" name="add_sets" onchange="showAdditionalSets()">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+        </select><br><br>
+
+        <!-- Additional Sets Options - List -->
+        <div id="additional_sets_options" style="display: none;">
+            <label for="fsl">FSL (First Set Last):</label>
+            <input type="checkbox" id="fsl" name="fsl"><br>
+
+            <label for="joker_sets">Joker Sets:</label>
+            <input type="checkbox" id="joker_sets" name="joker_sets"><br>
+
+            <label for="bbb">Boring But Big (BBB):</label>
+            <input type="checkbox" id="bbb" name="bbb"><br>
+
+            <label for="pyramids">Pyramid Sets:</label>
+            <input type="checkbox" id="pyramids" name="pyramids"><br><br>
+        </div>
+
+        <!-- Accessory Exercises Selector -->
+        <label for="accessory">Include Accessory Exercises:</label>
+        <select id="accessory" name="accessory">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+        </select><br><br>
+
         <!-- Submit button -->
         <input type="submit" value="Calculate Workout">
     </form>
