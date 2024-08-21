@@ -1,10 +1,11 @@
 import sys
 
-def calculate_workouts(orms):
+def calculate_workouts(orms, include_deload=True):
     """
     Calculate the workout program based on the given 1RMs.
 
     :param orms: A tuple containing the 1RM for bench, squat, overhead press, and deadlift.
+    :param include_deload: Boolean to include or exclude deload weeks.
     :return: A dictionary with the workout plan for each week.
     """
     workout_plan = {}
@@ -15,9 +16,11 @@ def calculate_workouts(orms):
     rep_schemes = {
         "WEEK 1": [(5, 0.65), (5, 0.75), (5, 0.85)],
         "WEEK 2": [(3, 0.70), (3, 0.80), (3, 0.90)],
-        "WEEK 3": [(5, 0.75), (3, 0.85), (1, 0.95)],
-        "WEEK 4": [(5, 0.40), (5, 0.50), (5, 0.60)]
+        "WEEK 3": [(5, 0.75), (3, 0.85), (1, 0.95)]
     }
+
+    if include_deload:
+        rep_schemes["WEEK 4"] = [(5, 0.40), (5, 0.50), (5, 0.60)]  # Deload week
 
     # Calculate the weights for each set
     for week, reps_and_percs in rep_schemes.items():

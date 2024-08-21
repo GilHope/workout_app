@@ -36,13 +36,14 @@ def calculator():
             deadlift_1rm = int(request.form['deadlift_1rm'])
             unit = request.form.get('unit', 'lbs')
             include_warmup = request.form.get('warmup', 'no') == 'yes'
+            include_deload = request.form.get('deload', 'yes') == 'yes'  # Default to 'yes' if not specified
 
             # Debugging output for selected unit
             print(f"Unit selected: {unit}")
             
             # Call to calculate the workout plan
             orms = (bench_1rm, squat_1rm, ohp_1rm, deadlift_1rm)
-            workout_plan = calculate_workouts(orms)
+            workout_plan = calculate_workouts(orms, include_deload=include_deload)
 
             # Add warm-up sets if the option is selected
             if include_warmup:
@@ -54,7 +55,7 @@ def calculator():
                             workout_plan[week][lift] = []
                         # Prepend warm-up sets before the main workout sets
                         workout_plan[week][lift] = warmup_sets + workout_plan[week][lift]
-                        
+
             # Generate workout plan
             return render_template('calculator.html', workout_plan=workout_plan, unit=unit)
         
