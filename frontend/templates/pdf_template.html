@@ -37,8 +37,12 @@
             {% for lift, sets in lifts.items() %}
                 <h3>{{ lift }}</h3>
                 <p>
-                    {% for reps, weight in sets %}
-                        {{ reps }} x {{ weight }} {{ unit }}{% if not loop.last %}, {% endif %}
+                    {% for set in sets %}
+                        {% if set is string %}
+                            {{ set | safe }}{% if not loop.last %}, {% endif %}
+                        {% else %}
+                            {{ set[0] }} x {{ set[1] }} {{ unit }}{% if not loop.last %}, {% endif %}
+                        {% endif %}
                     {% endfor %}
                 </p>
             {% endfor %}

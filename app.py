@@ -39,6 +39,7 @@ def calculator():
             include_deload = request.form.get('deload', 'yes') == 'yes'  # Default yes
             include_fsl = request.form.get('fsl', 'off') == 'on'
             include_bbb = request.form.get('bbb', 'off') == 'on'
+            include_pyramids = request.form.get('pyramids', 'off') == 'on'
 
             # Debugging output for selected unit
             print(f"Unit selected: {unit}")
@@ -74,6 +75,18 @@ def calculator():
                         bbb_weight = round(training_max * 0.50 / 5) * 5  # 50% of the training max
                         bbb_label = f"<em>5 sets of 10 x {bbb_weight} {unit}</em>"
                         workout_plan[week][lift].append(bbb_label)
+
+            # Add Pyramid sets if the option is selected
+            if include_pyramids:
+                for week, lifts in workout_plan.items():
+                    for lift, sets in lifts.items():
+                        if len(sets) >= 3:
+                            # Pyramid set logic: Set 4 is same as Set 2, Set 5 is same as Set 1
+                            pyramid_sets = [
+                                f"<em>{sets[1][0]} x {sets[1][1]} {unit}</em>",  # 4th set same as 2nd set
+                                f"<em>{sets[0][0]} x {sets[0][1]} {unit}</em>"  # 5th set same as 1st set
+                            ]
+                            workout_plan[week][lift].extend(pyramid_sets)
 
             # Generate workout plan
             return render_template('calculator.html', workout_plan=workout_plan, unit=unit)
