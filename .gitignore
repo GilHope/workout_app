@@ -16,3 +16,7 @@ Thumbs.db
 
 # Ignore configuration files
 *.env
+
+# 
+*.pyc
+__pycache__/
