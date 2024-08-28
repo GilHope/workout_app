@@ -45,7 +45,7 @@ def test_calculate_workouts_without_deload():
 
 # Test the warm-up sets are calculated correctly.
 def test_add_warmup_sets():
-    result = add_warmup_sets('BENCH', 100)
+    result = add_warmup_sets('BENCH', 100, 'lbs')
 
     # Check that warm-up sets are calculated correctly
     assert result == [
@@ -130,7 +130,7 @@ def test_combined_edge_cases():
 
     # Apply all additional sets
     for lift, lift_max in zip(["BENCH", "SQUAT", "OHP", "DEADLIFT"], orms):
-        warmup_sets = add_warmup_sets(lift, lift_max)
+        warmup_sets = add_warmup_sets(lift, lift_max, 'lbs')
         for week in workout_plan:
             if lift not in workout_plan[week]:
                 workout_plan[week][lift] = []
