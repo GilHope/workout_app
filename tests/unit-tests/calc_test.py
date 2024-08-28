@@ -5,7 +5,13 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 from workout_functions.block_calc.main import calculate_workouts
-from app import add_warmup_sets
+from workout_functions.block_calc.main import (
+    calculate_workouts,
+    add_warmup_sets,
+    add_fsl_sets,
+    add_pyramid_sets,
+    add_bbb_sets
+)
 
 # Test deload week is included when true
 def test_calculate_workouts_with_deload():
@@ -45,4 +51,31 @@ def test_add_warmup_sets():
         '5 x 45 lbs',  # 50% of training max
         '3 x 55 lbs'   # 60% of training max
     ]
+
+def test_add_fsl_sets():
+    """Test that FSL sets are correctly added and formatted."""
+    orms = (100, 200, 300, 400)
+    workout_plan = calculate_workouts(orms, unit='lbs', include_deload=True)
+    result = add_fsl_sets(workout_plan)
+
+    # Check that FSL sets are correctly appended for each lift
+    assert any('<em>3-5 sets of 5-8 reps x' in set for week in result.values() for sets in week.values() for set in sets)
+
+def test_add_bbb_sets():
+    """Test that BBB sets are correctly added and formatted."""
+    orms = (100, 200, 300, 400)
+    workout_plan = calculate_workouts(orms, unit='lbs', include_deload=True)
+    result = add_bbb_sets(workout_plan, orms, unit='lbs')
+
+    # Check that BBB sets are correctly appended and formatted in italics
+    assert any('5 sets of 10 x' in set for week in result.values() for sets in week.values() for set in sets)
+
+def test_add_pyramid_sets():
+    """Test that Pyramid sets are correctly added and formatted."""
+    orms = (100, 200, 300, 400)
+    workout_plan = calculate_workouts(orms, unit='lbs', include_deload=True)
+    result = add_pyramid_sets(workout_plan)
+
+    # Check that Pyramid sets are correctly appended and formatted in italics
+    assert any('<em>' in set for week in result.values() for sets in week.values() for set in sets)
 
