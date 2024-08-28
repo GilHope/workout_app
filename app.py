@@ -1,5 +1,11 @@
 from flask import Flask, render_template, request, send_file
-from workout_functions.block_calc.main import calculate_workouts
+from workout_functions.block_calc.main import (
+    calculate_workouts,
+    add_fsl_sets,
+    add_pyramid_sets,
+    add_bbb_sets,
+    add_warmup_sets
+)
 import pdfkit
 import os
 import json
@@ -14,15 +20,6 @@ app = Flask(__name__,
 @app.route('/')
 def home():
     return render_template('home.html')
-
-# Function for adding warm-up sets
-def add_warmup_sets(lift_name, lift_max):
-    warmup_sets = [
-        (5, round(lift_max * 0.40 / 5) * 5),  # 40% of training max
-        (5, round(lift_max * 0.50 / 5) * 5),  # 50% of training max
-        (3, round(lift_max * 0.60 / 5) * 5)   # 60% of training max
-    ]
-    return warmup_sets
 
 # Route to handle workout calculator form
 @app.route('/calculator', methods=['GET', 'POST'])
@@ -58,42 +55,17 @@ def calculator():
                         # Prepend warm-up sets before the main workout sets
                         workout_plan[week][lift] = warmup_sets + workout_plan[week][lift]
 
-
             # Add FSL sets if the option is selected
             if include_fsl:
-                for week, lifts in workout_plan.items():
-                    for lift, sets in lifts.items():
-                        # Assuming warm-up sets are added first, the main sets are after them
-                        # Check for the first bold set to identify the main set
-                        for set_item in sets:
-                            if 'strong' in set_item:  # Identify the first main set by checking for <strong> tags
-                                first_set_weight = set_item.split(' x ')[-1].replace('</strong>', '').strip()
-                                break  # Once found, we don't need to search further
-
-                        # Create the FSL set description using the extracted weight
-                        fsl_label = f"<em>3-5 sets of 5-8 reps x {first_set_weight}</em>"
-                        sets.append(fsl_label)  # Append the FSL set to the end of the list
+                workout_plan = add_fsl_sets(workout_plan)
 
             # Add BBB sets if the option is selected
             if include_bbb:
-                for week, lifts in workout_plan.items():
-                    for lift, sets in lifts.items():
-                        training_max = orms[["BENCH", "SQUAT", "OHP", "DEADLIFT"].index(lift)] * 0.9
-                        bbb_weight = round(training_max * 0.50 / 5) * 5  # 50% of the training max
-                        bbb_label = f"<em>5 sets of 10 x {bbb_weight} {unit}</em>"
-                        workout_plan[week][lift].append(bbb_label)
+                workout_plan = add_bbb_sets(workout_plan, orms, unit=unit)
 
             # Add Pyramid sets if selected
             if include_pyramids:
-                for week, lifts in workout_plan.items():
-                    for lift, sets in lifts.items():
-                        if len(sets) >= 3:
-                            # Pyramid set: replicate main sets with italics
-                            pyramid_sets = [
-                                f"<em>{sets[-2].replace('<strong>', '').replace('</strong>', '')}</em>",  # Same as 2nd main set
-                                f"<em>{sets[-3].replace('<strong>', '').replace('</strong>', '')}</em>"  # Same as 1st main set
-                            ]
-                            workout_plan[week][lift].extend(pyramid_sets)
+                workout_plan = add_pyramid_sets(workout_plan)
 
 
             # Generate workout plan

@@ -29,9 +29,52 @@ def calculate_workouts(orms, unit='lbs', include_deload=True):
     return workout_plan
 
 def add_warmup_sets(lift_name, lift_max):
+    # Calculate the training max as 90% of the 1RM
+    training_max = lift_max * 0.9
+    
     warmup_sets = [
-        (5, round(lift_max * 0.40 / 5) * 5),  # 40% of training max
-        (5, round(lift_max * 0.50 / 5) * 5),  # 50% of training max
-        (3, round(lift_max * 0.60 / 5) * 5)   # 60% of training max
+        (5, round(training_max * 0.40 / 5) * 5),  # 40% of training max
+        (5, round(training_max * 0.50 / 5) * 5),  # 50% of training max
+        (3, round(training_max * 0.60 / 5) * 5)   # 60% of training max
     ]
-    return [(f'{reps} reps', f'{weight} lbs') for reps, weight in warmup_sets]
+    
+    # Format warm-up sets without the word 'reps'
+    return [f'{reps} x {weight} lbs' for reps, weight in warmup_sets]
+
+def add_fsl_sets(workout_plan):
+    # Add FSL sets logic
+    for week, lifts in workout_plan.items():
+        for lift, sets in lifts.items():
+            for set_item in sets:
+                if 'strong' in set_item:  # Find first main set with <strong> tag
+                    first_set_weight = set_item.split(' x ')[-1].replace('</strong>', '')
+                    break  # Only need the first main set
+
+            fsl_label = f"<em>3-5 sets of 5-8 reps x {first_set_weight}</em>"
+            sets.append(fsl_label)  # Append the FSL set
+
+    return workout_plan
+
+def add_pyramid_sets(workout_plan):
+    # Add Pyramid sets logic
+    for week, lifts in workout_plan.items():
+        for lift, sets in lifts.items():
+            if len(sets) >= 3:  # Ensure there are at least 3 main sets
+                pyramid_sets = [
+                    f"<em>{sets[-2].replace('<strong>', '').replace('</strong>', '')}</em>",  # Same as 2nd main set
+                    f"<em>{sets[-3].replace('<strong>', '').replace('</strong>', '')}</em>"  # Same as 1st main set
+                ]
+                sets.extend(pyramid_sets)
+
+    return workout_plan
+
+def add_bbb_sets(workout_plan, orms, unit='lbs'):
+    # Add BBB (Boring But Big) sets logic
+    for week, lifts in workout_plan.items():
+        for lift, sets in lifts.items():
+            training_max = orms[["BENCH", "SQUAT", "OHP", "DEADLIFT"].index(lift)] * 0.9
+            bbb_weight = round(training_max * 0.50 / 5) * 5  # 50% of the training max
+            bbb_label = f"<em>5 sets of 10 x {bbb_weight} {unit}</em>"
+            sets.append(bbb_label)  # Append the BBB set
+
+    return workout_plan
