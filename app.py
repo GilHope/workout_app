@@ -46,26 +46,33 @@ def calculator():
             
             # Call to calculate the workout plan
             orms = (bench_1rm, squat_1rm, ohp_1rm, deadlift_1rm)
-            workout_plan = calculate_workouts(orms, include_deload=include_deload)
+            workout_plan = calculate_workouts(orms, unit=unit, include_deload=include_deload)
 
-            # Add warm-up sets if the option is selected
+            # Add warm-up sets if selected
             if include_warmup:
                 for lift, lift_max in zip(["BENCH", "SQUAT", "OHP", "DEADLIFT"], orms):
                     warmup_sets = add_warmup_sets(lift, lift_max)
                     for week in workout_plan:
-                        # Ensure the lift exists in the current week's plan
                         if lift not in workout_plan[week]:
                             workout_plan[week][lift] = []
                         # Prepend warm-up sets before the main workout sets
                         workout_plan[week][lift] = warmup_sets + workout_plan[week][lift]
 
+
             # Add FSL sets if the option is selected
             if include_fsl:
                 for week, lifts in workout_plan.items():
                     for lift, sets in lifts.items():
-                        first_set = sets[0]  # Get the first set's reps and weight
-                        fsl_label = f"<em>3-5 sets for 5-8 x {first_set[1]} {unit}</em>"  # Descriptive label for FSL
-                        workout_plan[week][lift].append(fsl_label)
+                        # Assuming warm-up sets are added first, the main sets are after them
+                        # Check for the first bold set to identify the main set
+                        for set_item in sets:
+                            if 'strong' in set_item:  # Identify the first main set by checking for <strong> tags
+                                first_set_weight = set_item.split(' x ')[-1].replace('</strong>', '').strip()
+                                break  # Once found, we don't need to search further
+
+                        # Create the FSL set description using the extracted weight
+                        fsl_label = f"<em>3-5 sets of 5-8 reps x {first_set_weight}</em>"
+                        sets.append(fsl_label)  # Append the FSL set to the end of the list
 
             # Add BBB sets if the option is selected
             if include_bbb:
@@ -76,17 +83,18 @@ def calculator():
                         bbb_label = f"<em>5 sets of 10 x {bbb_weight} {unit}</em>"
                         workout_plan[week][lift].append(bbb_label)
 
-            # Add Pyramid sets if the option is selected
+            # Add Pyramid sets if selected
             if include_pyramids:
                 for week, lifts in workout_plan.items():
                     for lift, sets in lifts.items():
                         if len(sets) >= 3:
-                            # Pyramid set logic: Set 4 is same as Set 2, Set 5 is same as Set 1
+                            # Pyramid set: replicate main sets with italics
                             pyramid_sets = [
-                                f"<em>{sets[1][0]} x {sets[1][1]} {unit}</em>",  # 4th set same as 2nd set
-                                f"<em>{sets[0][0]} x {sets[0][1]} {unit}</em>"  # 5th set same as 1st set
+                                f"<em>{sets[-2].replace('<strong>', '').replace('</strong>', '')}</em>",  # Same as 2nd main set
+                                f"<em>{sets[-3].replace('<strong>', '').replace('</strong>', '')}</em>"  # Same as 1st main set
                             ]
                             workout_plan[week][lift].extend(pyramid_sets)
+
 
             # Generate workout plan
             return render_template('calculator.html', workout_plan=workout_plan, unit=unit)
