@@ -17,7 +17,10 @@ def test_calculate_workouts_with_deload():
     assert 'WEEK 2:' in result
     assert 'WEEK 3:' in result
     assert 'WEEK 4:' in result  # Deload week should be included
-    
+
+    # Validate main set formatting (check bold)
+    assert all('<strong>' in set for week in result.values() for sets in week.values() for set in sets if 'strong' in set)
+
 # Test deload week is not included when false
 def test_calculate_workouts_without_deload():
     orms = (100, 200, 300, 400)
@@ -29,14 +32,21 @@ def test_calculate_workouts_without_deload():
     assert 'WEEK 3:' in result
     assert 'WEEK 4:' not in result  # Deload week should not be included
 
-# # Test warm-up sets are added correctly
-# def test_add_warmup_sets():
-#     """Test the warm-up sets are calculated correctly."""
-#     result = add_warmup_sets('BENCH', 100)
+    # Validate no empty week entries
+    assert all(len(sets) > 0 for week in result.values() for sets in week.values())
 
-#     # Check that warm-up sets are calculated correctly
-#     assert result == [
-#         (5, 40),  # 40% of training max
-#         (5, 50),  # 50% of training max
-#         (3, 60)   # 60% of training max
-#     ]
+# Test warm-up sets are added correctly
+def test_add_warmup_sets():
+    """Test the warm-up sets are calculated correctly."""
+    result = add_warmup_sets('BENCH', 100)
+
+    # Check that warm-up sets are calculated correctly
+    assert result == [
+        (5, 40),  # 40% of training max
+        (5, 50),  # 50% of training max
+        (3, 60)   # 60% of training max
+    ]
+
+    # Check correct length
+    assert len(result) == 3
+
