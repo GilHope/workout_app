@@ -38,6 +38,11 @@ def calculator():
             include_bbb = request.form.get('bbb', 'off') == 'on'
             include_pyramids = request.form.get('pyramids', 'off') == 'on'
 
+            # Validate that 1RM values are within the accepted range
+            for lift, value in zip(["Bench", "Squat", "OHP", "Deadlift"], [bench_1rm, squat_1rm, ohp_1rm, deadlift_1rm]):
+                if value < 0 or value > 1000:
+                    raise ValueError(f"{lift} 1RM must be between 0 and 1000.")
+
             # Debugging output for selected unit
             print(f"Unit selected: {unit}")
             
@@ -73,7 +78,7 @@ def calculator():
         
         # Error handling
         except ValueError:
-            return render_template('calculator.html', error="Please enter valid integer values for all 1RMs.")
+            return render_template('calculator.html', error="Please enter valid integer values for all 1RMs between 1 and 1000.")
     
     # If GET request, just render the form
     return render_template('calculator.html')
