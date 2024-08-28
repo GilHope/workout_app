@@ -1,6 +1,20 @@
 import sys
 
 def calculate_workouts(orms, unit='lbs', include_deload=True):
+
+    # Validate input ranges for 1RM values
+    for lift, value in zip(["Bench", "Squat", "OHP", "Deadlift"], orms):
+        if value is None or value == '':
+            raise ValueError(f"{lift} 1RM values cannot be None or empty.")
+        
+        try:
+            value = int(value)  # Convert value to integer
+        except ValueError:
+            raise ValueError(f"{lift} 1RM must be an integer.")
+
+        if value < 0 or value > 1000:
+            raise ValueError(f"{lift} 1RM must be between 0 and 1000.")
+        
     workout_plan = {}
 
     training_maxes = {lift: max * 0.9 for lift, max in zip(["BENCH", "SQUAT", "OHP", "DEADLIFT"], orms)}
