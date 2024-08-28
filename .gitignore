@@ -1,0 +1,18 @@
+# Ignore virtual environments
+venv/
+.env/
+
+# Ignore compiled Python files
+__pycache__/
+*.py[cod]
+
+# Ignore test cache files
+.pytest_cache/
+*.cache
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore configuration files
+*.env
