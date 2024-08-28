@@ -42,7 +42,7 @@ def calculate_workouts(orms, unit='lbs', include_deload=True):
 
     return workout_plan
 
-def add_warmup_sets(lift_name, lift_max):
+def add_warmup_sets(lift_name, lift_max, unit):
     # Calculate the training max as 90% of the 1RM
     training_max = lift_max * 0.9
     
@@ -52,8 +52,12 @@ def add_warmup_sets(lift_name, lift_max):
         (3, round(training_max * 0.60 / 5) * 5)   # 60% of training max
     ]
     
+    # Format warm-up sets with the correct unit
+    return [f"{reps} x {weight} {unit}" for reps, weight in warmup_sets]
+
+    
     # Format warm-up sets without the word 'reps'
-    return [f'{reps} x {weight} lbs' for reps, weight in warmup_sets]
+    return [f"{reps} x {weight} {unit}" for reps, weight in warmup_sets]
 
 def add_fsl_sets(workout_plan):
     # Add FSL sets logic

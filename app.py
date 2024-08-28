@@ -53,7 +53,7 @@ def calculator():
             # Add warm-up sets if selected
             if include_warmup:
                 for lift, lift_max in zip(["BENCH", "SQUAT", "OHP", "DEADLIFT"], orms):
-                    warmup_sets = add_warmup_sets(lift, lift_max)
+                    warmup_sets = add_warmup_sets(lift, lift_max, unit)
                     for week in workout_plan:
                         if lift not in workout_plan[week]:
                             workout_plan[week][lift] = []
@@ -71,7 +71,6 @@ def calculator():
             # Add Pyramid sets if selected
             if include_pyramids:
                 workout_plan = add_pyramid_sets(workout_plan)
-
 
             # Generate workout plan
             return render_template('calculator.html', workout_plan=workout_plan, unit=unit)
