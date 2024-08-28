@@ -38,11 +38,7 @@
                 <h3>{{ lift }}</h3>
                 <p>
                     {% for set in sets %}
-                        {% if set is string %}
-                            {{ set | safe }}{% if not loop.last %}, {% endif %}
-                        {% else %}
-                            {{ set[0] }} x {{ set[1] }} {{ unit }}{% if not loop.last %}, {% endif %}
-                        {% endif %}
+                        {{ set | safe }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </p>
             {% endfor %}
