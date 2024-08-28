@@ -35,18 +35,14 @@ def test_calculate_workouts_without_deload():
     # Validate no empty week entries
     assert all(len(sets) > 0 for week in result.values() for sets in week.values())
 
-# Test warm-up sets are added correctly
 def test_add_warmup_sets():
     """Test the warm-up sets are calculated correctly."""
     result = add_warmup_sets('BENCH', 100)
 
     # Check that warm-up sets are calculated correctly
     assert result == [
-        (5, 40),  # 40% of training max
-        (5, 50),  # 50% of training max
-        (3, 60)   # 60% of training max
+        '5 x 35 lbs',  # 40% of training max (90 lbs training max, so 35 lbs)
+        '5 x 45 lbs',  # 50% of training max
+        '3 x 55 lbs'   # 60% of training max
     ]
-
-    # Check correct length
-    assert len(result) == 3
 
