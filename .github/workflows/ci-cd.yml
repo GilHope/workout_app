@@ -27,8 +27,12 @@ jobs:
             - name: Build image
               run: docker build -t workout_app .
             
-            - name: Run Tests
+            - name: Run Unit Tests
               run: |
-                docker run workout_app pytest tests/unit-tests/calc_test.py
+                docker run workout_app pytest tests/unit/
+
+            - name: Run Integration Tests
+              run: |
+                docker run workout_app pytest tests/integration/
             
             
