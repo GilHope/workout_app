@@ -17,6 +17,13 @@ Thumbs.db
 # Ignore configuration files
 *.env
 
-# 
 *.pyc
 __pycache__/
+
+terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
