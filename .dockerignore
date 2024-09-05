@@ -17,3 +17,11 @@ __pycache__/
 
 .git
 .gitignore
+
+terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform/
+.terraform.lock.hcl
