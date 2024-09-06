@@ -18,10 +18,17 @@ __pycache__/
 .git
 .gitignore
 
+
 terraform/
 *.tfstate
 *.tfstate.*
+
+*.tfplan
+.terraform.lock.hcl
+
 *.tfvars
 *.tfvars.json
+
 .terraform/
-.terraform.lock.hcl
+backend.tf
+backend.tf.json

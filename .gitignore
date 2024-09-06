@@ -20,9 +20,15 @@ Thumbs.db
 *.pyc
 __pycache__/
 
-terraform/.terraform/
-terraform/*.tfstate
-terraform/*.tfstate.*
-terraform/.terraform.lock.hcl
-terraform/terraform.tfvars
-terraform/backend.tf
+
+.terraform/                      
+*.tfstate.*                      
+.terraform.lock.hcl              
+
+*.tfvars                         
+*.tfvars.json                    
+
+*.tfplan                         
+
+backend.tf
+backend.tf.json
