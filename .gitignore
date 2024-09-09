@@ -21,14 +21,17 @@ Thumbs.db
 __pycache__/
 
 
-.terraform/                      
+.terraform/  
+*.tfstate                    
 *.tfstate.*                      
 .terraform.lock.hcl              
 
 *.tfvars                         
 *.tfvars.json                    
-
 *.tfplan                         
 
 backend.tf
 backend.tf.json
+
+# Ignore tf log files
+crash.log
