@@ -5,7 +5,13 @@ variable "aws_region" {
 }
 
 variable "environment" {
-  description = "Deployment env"
+  description = "Deployment environment"
   type        = string
-  default     = "testing"
+  default     = "531-testing-env"
+}
+
+variable "tags" {
+  description = "Tags to apply to all resources"
+  type        = map(string)
+  default     = {}
 }
