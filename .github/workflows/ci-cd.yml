@@ -24,9 +24,22 @@ jobs:
             - name: Docker BuildX
               uses: docker/setup-buildx-action@v1
 
-            - name: Build image
-              run: docker build -t workout_app .
+            - name: Login to Amazon ECR
+              env:
+                AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+              run: |
+                aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
             
+            - name: Build Docker image
+              run: |
+                docker build -t workout_app .
+                docker tag workout_app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/531-image-repo:latest
+            
+            - name: Push Docker image to ECR
+              run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/531-image-repo:latest
+        
+
             - name: Run Unit Tests
               run: |
                 docker run workout_app pytest tests/unit/
