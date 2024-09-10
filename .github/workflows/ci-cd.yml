@@ -39,13 +39,35 @@ jobs:
             - name: Push Docker image to ECR
               run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/531-image-repo:latest
         
-
             - name: Run Unit Tests
               run: |
                 docker run workout_app pytest tests/unit/
 
-            - name: Run Integration Tests
-              run: |
-                docker run workout_app pytest tests/integration/
+    deploy-to-testing-env:
+      needs: build
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Setup AWS CLI
+          uses: aws-actions/configure-aws-credentials@v2
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-1
+
+        - name: Update ECS
+          run: |
+            aws ecs update-service --cluster 531-testing-env-ecs-cluster --531-testing-env-ecs-service --force-new-deployment
+
+        - name: Run Integration Tests in ECS
+          run: |
+            aws ecs run-task --cluster 531-testing-env-ecs-cluster \
+              --task-definition 531-integration-test-task:2 \
+              --launch-type FARGATE \
+              --network-configuration "awsvpcConfiguration={subnets=[subnet-0733ed528741fbb1f,subnet-0d9eb2464b875dbce],securityGroups=[sg-0d86054e7df3c6a16],assignPublicIp=ENABLED}" \
+              --overrides '{"containerOverrides":[{"name":"test-container","command":["pytest","tests/integration/"]}]}'
             
             
