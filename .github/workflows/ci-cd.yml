@@ -60,7 +60,7 @@ jobs:
 
         - name: Update ECS
           run: |
-            aws ecs update-service --cluster 531-testing-env-ecs-cluster --service --531-testing-env-ecs-service --force-new-deployment
+            aws ecs update-service --cluster 531-testing-env-ecs-cluster --service 531-testing-env-ecs-service --force-new-deployment
 
         - name: Run Integration Tests in ECS
           run: |
