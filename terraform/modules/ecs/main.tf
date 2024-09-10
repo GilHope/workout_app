@@ -44,7 +44,7 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = jsonencode([
     {
       name        = "app"
-      image       = var.docker_image  # Pass the Docker image as a variable
+      image       = "${aws_ecr_repository.app_repo.repository_url}:latest"
       cpu         = 256
       memory      = 512
       essential   = true
