@@ -65,7 +65,7 @@ jobs:
         - name: Run Integration Tests in ECS
           run: |
             aws ecs run-task --cluster 531-testing-env-ecs-cluster \
-              --task-definition 531-integration-test-task:2 \
+              --task-definition 531-integration-env-task:2 \
               --launch-type FARGATE \
               --network-configuration "awsvpcConfiguration={subnets=[subnet-0733ed528741fbb1f,subnet-0d9eb2464b875dbce],securityGroups=[sg-0d86054e7df3c6a16],assignPublicIp=ENABLED}" \
               --overrides '{"containerOverrides":[{"name":"test-container","command":["pytest","tests/integration/"]}]}'
