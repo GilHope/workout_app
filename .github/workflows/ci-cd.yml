@@ -68,6 +68,6 @@ jobs:
               --task-definition 531-testing-env-task:2 \
               --launch-type FARGATE \
               --network-configuration "awsvpcConfiguration={subnets=[subnet-0733ed528741fbb1f,subnet-0d9eb2464b875dbce],securityGroups=[sg-0d86054e7df3c6a16],assignPublicIp=ENABLED}" \
-              --overrides '{"containerOverrides":[{"name":"test-container","command":["pytest","tests/integration/"]}]}'
+              --overrides '{"containerOverrides":[{"name":"app","command":["pytest","tests/integration/"]}]}'
             
             
