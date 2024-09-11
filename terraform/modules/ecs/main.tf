@@ -54,6 +54,14 @@ resource "aws_ecs_task_definition" "app" {
           hostPort      = 80
         }
       ]
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = "/ecs/${var.environment}-app"
+          awslogs-region        = "us-east-1" 
+          awslogs-stream-prefix = "ecs"
+        }
+      }  
     }
   ])
   tags = merge(
