@@ -15,8 +15,6 @@ This is a web application designed to calculate workout plans based on the Wendl
 
 ## Usage
 
-## Usage
-
 1. **Enter your 1RM values**: Fill in your one-rep max for Bench Press, Squat, Overhead Press, and Deadlift.
 
 2. **Select your preferences**:
